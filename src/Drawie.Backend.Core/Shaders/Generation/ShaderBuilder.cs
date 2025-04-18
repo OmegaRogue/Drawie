@@ -106,6 +106,16 @@ public class ShaderBuilder
     {
         Uniforms[coords] = new Uniform(coords, constCoordsConstantValue);
     }
+    
+    public void AddUniform(string coords, Vec3D constCoordsConstantValue)
+    {
+        Uniforms[coords] = new Uniform(coords, constCoordsConstantValue);
+    }
+    
+    public void AddUniform(string coords, Vec4D constCoordsConstantValue)
+    {
+        Uniforms[coords] = new Uniform(coords, constCoordsConstantValue);
+    }
 
     public void AddUniform(string uniformName, float floatValue)
     {
@@ -127,6 +137,35 @@ public class ShaderBuilder
         _bodyBuilder.AppendLine($"{contextPosition.VariableName} = {constantValueVar.ConstantValueString};");
     }
 
+    public Float3 ConstructFloat3(Expression x, Expression y, Expression z)
+    {
+        string name   = $"vec3_{GetUniqueNameNumber()}";
+        Float3 result = new Float3(name);
+        _variables.Add(result);
+
+        string xExpression = x.ExpressionValue;
+        string yExpression = y.ExpressionValue;
+        string zExpression = z.ExpressionValue;
+
+        _bodyBuilder.AppendLine($"float3 {name} = float3({xExpression}, {yExpression}, {zExpression});");
+        return result;
+    }
+    
+    public Float4 ConstructFloat4(Expression x, Expression y, Expression z, Expression w)
+    {
+        string name   = $"vec4_{GetUniqueNameNumber()}";
+        Float4 result = new Float4(name);
+        _variables.Add(result);
+
+        string xExpression = x.ExpressionValue;
+        string yExpression = y.ExpressionValue;
+        string zExpression = z.ExpressionValue;
+        string wExpression = w.ExpressionValue;
+
+        _bodyBuilder.AppendLine($"float4 {name} = float4({xExpression}, {yExpression}, {zExpression}, {wExpression});");
+        return result;
+    }
+    
     public Float2 ConstructFloat2(Expression x, Expression y)
     {
         string name = $"vec2_{GetUniqueNameNumber()}";
